@@ -37,10 +37,18 @@
 
   /* ---------- 第一屏 ---------- */
   .hero{
-    min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-    padding:26px 24px calc(28px + env(safe-area-inset-bottom));
+    min-height:100svh;display:flex;flex-direction:column;justify-content:center;gap:2px;
+    padding:calc(18px + env(safe-area-inset-top)) 20px calc(18px + env(safe-area-inset-bottom));
     position:relative;overflow:hidden;
+    background:
+      radial-gradient(circle at 12% -4%, #ffe6cf 0%, transparent 45%),
+      radial-gradient(circle at 92% 6%, #ffdcda 0%, transparent 42%),
+      radial-gradient(circle at 78% 96%, #e9f2e3 0%, transparent 40%),
+      var(--bg);
   }
+  .hero .arena{flex-direction:column;gap:10px;min-height:132px;margin-top:6px}
+  .hero .yes{width:100%;max-width:360px}
+  .hero .no{width:auto}
   .blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.5;animation:float 9s ease-in-out infinite alternate;pointer-events:none}
   .blob.b1{width:120px;height:120px;background:#ffd9c2;top:-30px;right:22%}
   .blob.b2{width:70px;height:70px;background:#ffe0e2;bottom:12%;left:-18px;animation-delay:-4s}
@@ -60,34 +68,31 @@
   .hero h1 em{display:block;font-style:normal;font-size:clamp(20px,5.4vw,28px);color:var(--plum);margin-top:10px;letter-spacing:.08em}
   .hero .sub{font-size:14px;color:var(--muted);letter-spacing:.06em;margin:12px 0 0}
 
-  .figure-wrap{position:relative;margin:8px auto 0;width:min(360px,84vw);aspect-ratio:3/4}
-  .figure-wrap::before{
-    content:"";position:absolute;inset:6% 4% 10%;
-    background:radial-gradient(circle at 50% 42%,#ffe3cf 0%,#ffeef1 52%,transparent 72%);
-    border-radius:50% 50% 46% 54% / 46% 44% 56% 54%;
-    animation:breathe 6s ease-in-out infinite alternate;
+  .stage{
+    position:relative;width:100%;margin:14px auto 0;
+    display:flex;align-items:center;justify-content:center;
   }
-  @keyframes breathe{from{transform:scale(.96)}to{transform:scale(1.05)}}
-  .hero-figure{
-    position:relative;width:100%;height:100%;overflow:hidden;
+  .main-sticker{
+    position:relative;width:min(248px,60vw);aspect-ratio:3/4;z-index:2;
+    transform:rotate(-2deg);
     animation:hoist 1s cubic-bezier(.2,.8,.2,1) both;
   }
-  @keyframes hoist{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
-  .hero-figure img{
-    width:100%;height:100%;display:block;object-fit:cover;object-position:center 42%;
-    transform:scale(1.06) rotate(-1.2deg);
-    filter:drop-shadow(0 18px 24px rgba(150,96,60,.16));
+  @keyframes hoist{from{opacity:0;transform:translateY(22px) scale(.94) rotate(-5deg)}to{opacity:1;transform:rotate(-2deg)}}
+  .main-sticker img{width:100%;height:100%;display:block}
+
+  .mini{
+    position:absolute;width:clamp(64px,17vw,96px);aspect-ratio:1;z-index:1;
+    animation:kidFloat 4.2s ease-in-out infinite;
   }
-  .spark{position:absolute;color:var(--amber);font-size:15px;animation:twinkle 2.4s ease-in-out infinite}
-  .spark.s1{left:2%;top:22%}.spark.s2{right:3%;top:34%;animation-delay:-.8s;font-size:11px}
-  .spark.s3{left:9%;bottom:26%;animation-delay:-1.5s;font-size:10px}
+  .mini img{width:100%;height:100%;display:block}
+  .mini.m1{left:-2%;top:-4%;rotate:-7deg}
+  .mini.m2{right:-2%;top:32%;rotate:8deg;animation-delay:-1.4s}
+  .mini.m3{left:2%;bottom:-4%;width:clamp(54px,14vw,78px);rotate:5deg;animation-delay:-2.6s}
+  @keyframes kidFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+  .spark{position:absolute;color:var(--amber);font-size:14px;animation:twinkle 2.4s ease-in-out infinite;z-index:3}
+  .spark.s1{left:16%;top:2%}.spark.s2{right:10%;top:56%;animation-delay:-.8s;font-size:11px}
+  .spark.s3{left:20%;bottom:8%;animation-delay:-1.5s;font-size:10px}
   @keyframes twinkle{0%,100%{opacity:.3;transform:scale(.8) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(20deg)}}
-  .figure-tag{
-    position:absolute;right:-6px;bottom:12%;width:66px;height:66px;border-radius:50%;
-    background:var(--coral);color:#fff;display:grid;place-items:center;text-align:center;
-    font-size:12px;line-height:1.3;letter-spacing:.06em;transform:rotate(8deg);
-    box-shadow:0 10px 24px rgba(230,102,79,.35);z-index:2;
-  }
 
   .arena{position:relative;min-height:120px;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:12px}
   .yes{
@@ -108,7 +113,13 @@
   .tiny-note{font-size:12px;color:#b3a091;letter-spacing:.06em;margin:8px 0 0;text-align:center}
 
   /* ---------- 任务页 ---------- */
-  .quest{max-width:600px;margin:0 auto;padding:0 20px calc(46px + env(safe-area-inset-bottom))}
+  .quest{
+    max-width:600px;margin:0 auto;padding:0 20px calc(46px + env(safe-area-inset-bottom));
+    background:
+      radial-gradient(circle at 88% 2%, #ffe6cf 0%, transparent 40%),
+      radial-gradient(circle at 4% 58%, #ffe9de 0%, transparent 46%),
+      var(--bg);
+  }
   .topbar{
     position:sticky;top:0;z-index:9;padding:14px 0 12px;
     background:linear-gradient(var(--bg) 74%,rgba(253,245,236,0));
@@ -125,18 +136,24 @@
   .dots i.done{background:var(--amber)}
   .dots i.now{background:var(--coral);transform:scale(1.25)}
 
-  .screen{animation:enter .55s cubic-bezier(.2,.7,.2,1) both}
+  .screen{position:relative;animation:enter .55s cubic-bezier(.2,.7,.2,1) both}
   @keyframes enter{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  img.deco{
+    position:absolute;right:-2px;top:-50px;width:84px;height:84px;z-index:2;
+    animation:kidFloat 4s ease-in-out infinite;
+  }
   h2.title{font-family:var(--serif);font-weight:600;font-size:clamp(25px,6.6vw,32px);letter-spacing:.04em;margin:4px 0 10px;line-height:1.4;color:var(--ink)}
   p.sub{font-size:14px;line-height:1.9;color:#8f7a6c;margin:0 0 22px}
 
   .panel{background:var(--card);border-radius:22px;padding:22px 20px;box-shadow:0 12px 34px rgba(140,95,60,.1);border:1px solid #fbead9}
 
   .sticker{
-    display:inline-flex;flex-direction:column;gap:3px;border:2px dashed var(--coral);
-    border-radius:16px;padding:14px 20px;margin:6px 0 18px;background:#fff;
+    display:inline-flex;align-items:center;gap:13px;border:2px dashed var(--coral);
+    border-radius:16px;padding:10px 22px 10px 10px;margin:6px 0 18px;background:#fff;
     transform:rotate(-1.6deg);box-shadow:0 10px 26px rgba(230,102,79,.14);
   }
+  .sticker img{width:58px;height:58px;border-radius:12px;object-fit:cover}
+  .sticker .txt{display:flex;flex-direction:column;gap:3px}
   .sticker small{font-size:9px;letter-spacing:.24em;color:var(--coral)}
   .sticker strong{font-family:var(--serif);font-size:18px;letter-spacing:.1em;color:var(--plum)}
   .roadmap{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:#8f7a6c;margin:0 0 22px}
@@ -230,11 +247,15 @@
   .plan-card div:last-child{border-bottom:0}
   .plan-card span{font-size:10px;letter-spacing:.2em;color:var(--coral);white-space:nowrap}
   .plan-card strong{font-family:var(--serif);font-size:15.5px;letter-spacing:.03em;text-align:right;color:var(--ink);line-height:1.5}
-  .shelf{display:flex;gap:9px;justify-content:center;margin:6px 0 18px}
-  .shelf i{
-    width:40px;height:40px;border-radius:12px;background:#fff;border:1px dashed #edc9a6;
-    display:grid;place-items:center;font-style:normal;font-size:11px;color:#b08a6a;
+  .shelf{display:flex;gap:4px;justify-content:center;margin:0 0 12px}
+  .shelf img{
+    width:56px;height:56px;
+    animation:kidFloat 3.6s ease-in-out infinite;
   }
+  .shelf img:nth-child(2){rotate:-7deg;animation-delay:-.7s}
+  .shelf img:nth-child(3){rotate:5deg;animation-delay:-1.4s}
+  .shelf img:nth-child(4){rotate:-5deg;animation-delay:-2.1s}
+  .shelf img:nth-child(5){rotate:7deg;animation-delay:-2.8s}
   .secondary{
     appearance:none;background:transparent;border:0;color:#a08b7c;font-size:13px;
     letter-spacing:.12em;padding:12px;width:100%;cursor:pointer;
@@ -254,10 +275,12 @@
     <h1>Hello，姜姜<em>周末借我一下？</em></h1>
     <p class="sub">不赶行程，先把开心这件事约上。</p>
 
-    <div class="figure-wrap">
+    <div class="stage">
       <span class="spark s1">✦</span><span class="spark s2">✦</span><span class="spark s3">✦</span>
-      <div class="hero-figure"><img src="assets/jiangjiang-character.jpg" alt="姜姜"></div>
-      <span class="figure-tag">请<br>签收</span>
+      <span class="mini m1"><img src="assets/kid/k1.png" alt=""></span>
+      <span class="mini m2"><img src="assets/kid/k3.png" alt=""></span>
+      <span class="mini m3"><img src="assets/kid/k5.png" alt=""></span>
+      <div class="main-sticker"><img src="assets/figure-main.png" alt="姜姜"></div>
     </div>
 
     <div class="arena" id="arena">
@@ -279,12 +302,13 @@
     <p class="kicker">QUEST ACCEPTED</p>
     <h2 class="title">好，第一枚贴纸到手</h2>
     <p class="sub">接下来只有三个小决定。<br>选择困难也没关系，每一项都可以交给我。</p>
-    <div class="sticker"><small>NEW STICKER</small><strong>周末通行证</strong></div>
+    <div class="sticker"><img src="assets/kid/k2.png" alt=""><span class="txt"><small>NEW STICKER</small><strong>周末通行证</strong></span></div>
     <div class="roadmap"><span>时间</span><b>→</b><span>吃什么</span><b>→</b><span>剩下的</span></div>
     <button class="primary" id="to3">开始第一关</button>
   </section>
 
   <section class="screen" id="step3" hidden>
+    <img class="deco" src="assets/kid/k4.png" alt="">
     <p class="kicker">CHAPTER ONE · 留个空</p>
     <h2 class="title">挑一个不赶时间</h2>
     <p class="sub">先把你方便的时间圈出来，其他的我来配合。</p>
@@ -299,6 +323,7 @@
   </section>
 
   <section class="screen" id="step4" hidden>
+    <img class="deco" src="assets/kid/k6.png" alt="">
     <p class="kicker">CHAPTER TWO · 吃点好的</p>
     <h2 class="title">认真选，还是交给手气？</h2>
     <div class="tabs" role="tablist">
@@ -328,6 +353,7 @@
   </section>
 
   <section class="screen" id="step5" hidden>
+    <img class="deco" src="assets/kid/k5.png" alt="">
     <p class="kicker">CHAPTER THREE · 加点节目</p>
     <h2 class="title">吃完之后，想做点什么</h2>
     <p class="sub">可以多选，也可以什么都不选——散步本身就很好。</p>
@@ -343,7 +369,13 @@
     <p class="kicker">QUEST COMPLETE</p>
     <h2 class="title">全都定好了</h2>
     <p class="sub">你准备好就行，剩下的交给我。</p>
-    <div class="shelf"><i>票</i><i>时</i><i>食</i><i>玩</i><i>车</i></div>
+    <div class="shelf">
+      <img src="assets/kid/k1.png" alt="">
+      <img src="assets/kid/k2.png" alt="">
+      <img src="assets/kid/k4.png" alt="">
+      <img src="assets/kid/k6.png" alt="">
+      <img src="assets/kid/k3.png" alt="">
+    </div>
     <div class="plan-card">
       <div><span>时间</span><strong id="sum-time">明天 18:00</strong></div>
       <div><span>吃什么</span><strong id="sum-food">等你决定</strong></div>
@@ -562,6 +594,9 @@
     catch { alert(planText()); }
   };
 
+  const kidImg = new Image();
+  kidImg.src = 'assets/kid/k7.png';
+
   document.getElementById('poster').onclick = () => {
     const c = document.getElementById('canvas');
     const x = c.getContext('2d');
@@ -573,6 +608,12 @@
     x.fillStyle = '#3b2a22';
     x.font = '600 84px "Songti SC", serif';
     x.fillText('姜姜的出发卡', 90, 258);
+    if (kidImg.complete && kidImg.naturalWidth){
+      x.save();
+      x.translate(838, 226); x.rotate(5 * Math.PI / 180);
+      x.drawImage(kidImg, -155, -155, 310, 310);
+      x.restore();
+    }
     x.fillStyle = '#9a8375';
     x.font = '400 30px "PingFang SC", sans-serif';
     x.fillText('准备好了就行，剩下的交给我。', 90, 318);
