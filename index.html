@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0807">
+<title>给姜姜</title>
+<style>
+  :root{
+    --ink:#0b0807;
+    --ink-2:#141009;
+    --copper:#c98a5f;
+    --copper-soft:#e5b795;
+    --cream:#f7ede3;
+    --muted:#b8a494;
+    --line:rgba(201,138,95,.26);
+    --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;
+    --sans:"PingFang SC","Hiragino Sans GB","Noto Sans SC",sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink);
+    color:var(--cream);
+    font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* 颗粒 + 暗角，模拟胶片 */
+  body::after{
+    content:"";
+    position:fixed;inset:0;pointer-events:none;z-index:9;
+    opacity:.16;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='0.5'/></svg>");
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;height:100svh;min-height:560px;
+    display:flex;align-items:flex-end;justify-content:center;
+    overflow:hidden;
+  }
+  .hero img{
+    position:absolute;inset:0;width:100%;height:100%;
+    object-fit:cover;object-position:52% 26%;
+    filter:saturate(1.03) contrast(1.02);
+    animation:drift 26s ease-in-out infinite alternate;
+  }
+  @keyframes drift{from{transform:scale(1.06) translateY(0)}to{transform:scale(1.1) translateY(-14px)}}
+  .veil{
+    position:absolute;inset:0;
+    background:
+      radial-gradient(120% 80% at 70% 20%,rgba(201,138,95,.16),transparent 60%),
+      linear-gradient(to bottom,rgba(11,8,7,.10) 0%,rgba(11,8,7,.30) 42%,rgba(11,8,7,.78) 74%,var(--ink) 100%);
+  }
+  .hero-inner{
+    position:relative;z-index:2;width:100%;max-width:720px;
+    padding:0 26px calc(46px + env(safe-area-inset-bottom));
+    text-align:center;
+  }
+  .eyebrow{
+    font-size:12px;letter-spacing:.42em;color:var(--copper-soft);
+    margin:0 0 18px;text-indent:.42em;
+    opacity:0;animation:rise .9s .35s ease forwards;
+  }
+  .hero h1{
+    font-family:var(--serif);font-weight:600;
+    font-size:clamp(62px,17vw,132px);line-height:.94;
+    letter-spacing:.06em;margin:0;color:var(--cream);
+    text-shadow:0 2px 40px rgba(0,0,0,.55);
+    opacity:0;animation:rise 1.1s .5s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  .hero-sub{
+    margin:22px 0 0;font-size:clamp(14px,3.7vw,16px);
+    color:#dccdc1;letter-spacing:.08em;
+    opacity:0;animation:rise 1s .8s ease forwards;
+  }
+  .hint{
+    margin-top:36px;display:inline-flex;align-items:center;gap:10px;
+    font-size:12px;letter-spacing:.2em;color:var(--muted);
+    opacity:0;animation:rise 1s 1.05s ease forwards;
+  }
+  .hint i{display:block;width:1px;height:26px;background:linear-gradient(var(--copper),transparent);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ---------- 正文 ---------- */
+  .wrap{max-width:680px;margin:0 auto;padding:0 24px}
+  section{position:relative}
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  .letter{padding:86px 0 34px}
+  .letter .mark{
+    font-family:var(--serif);font-size:13px;letter-spacing:.35em;
+    color:var(--copper);margin-bottom:28px;
+  }
+  .letter p{
+    font-size:clamp(17px,4.5vw,20px);line-height:2.05;
+    color:#e9ddd2;margin:0 0 26px;letter-spacing:.02em;
+  }
+  .letter p strong{color:var(--copper-soft);font-weight:600}
+  .sig{
+    font-family:var(--serif);font-size:15px;color:var(--muted);
+    text-align:right;margin-top:8px;letter-spacing:.1em;
+  }
+
+  /* ---------- 选择 ---------- */
+  .plan{padding:34px 0 20px}
+  .label{
+    font-size:12px;letter-spacing:.3em;color:var(--copper);
+    margin:0 0 16px;text-indent:.3em;
+  }
+  .group{margin-bottom:38px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{
+    appearance:none;border:1px solid var(--line);background:rgba(255,240,225,.035);
+    color:#e3d3c6;font-family:var(--sans);font-size:15px;letter-spacing:.04em;
+    padding:13px 20px;border-radius:999px;cursor:pointer;
+    transition:transform .25s cubic-bezier(.2,.7,.2,1),background .3s,border-color .3s,color .3s;
+  }
+  .chip:active{transform:scale(.96)}
+  .chip[aria-pressed="true"]{
+    background:linear-gradient(120deg,var(--copper),#a96b43);
+    border-color:transparent;color:#1b1008;font-weight:600;
+    box-shadow:0 8px 26px rgba(201,138,95,.26);
+  }
+
+  .summary{
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:26px 0;margin:10px 0 34px;
+    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+  }
+  .summary .k{font-size:12px;letter-spacing:.28em;color:var(--muted)}
+  .summary .v{
+    font-family:var(--serif);font-size:clamp(20px,5.6vw,26px);
+    color:var(--cream);letter-spacing:.06em;text-align:right;
+  }
+  .summary .v.empty{color:#7d6c5e}
+
+  .actions{display:flex;flex-direction:column;gap:14px;padding-bottom:10px}
+  .primary{
+    appearance:none;border:0;width:100%;padding:19px 24px;border-radius:16px;
+    background:linear-gradient(120deg,#d79a6d,#b06e44);
+    color:#1a0f07;font-family:var(--serif);font-size:18px;letter-spacing:.18em;
+    cursor:pointer;text-indent:.18em;
+    box-shadow:0 14px 40px rgba(176,110,68,.3);
+    transition:transform .2s,box-shadow .3s;
+  }
+  .primary:active{transform:scale(.985)}
+  .ghost{
+    appearance:none;background:none;border:0;color:#8d7b6c;
+    font-family:var(--sans);font-size:13px;letter-spacing:.16em;
+    padding:10px;cursor:pointer;transition:transform .35s cubic-bezier(.2,.7,.2,1),color .3s;
+  }
+  .ghost.calm{color:var(--copper-soft)}
+
+  /* ---------- 落款 ---------- */
+  .tail{padding:70px 0 60px;text-align:center}
+  .tail .line{width:52px;height:1px;background:var(--line);margin:0 auto 24px}
+  .tail p{font-size:13px;letter-spacing:.18em;color:#8b7a6c;margin:0}
+  .tail .date{
+    font-family:var(--serif);font-size:12px;letter-spacing:.4em;
+    color:#6f6053;margin-top:26px;
+  }
+
+  /* ---------- 确认 ---------- */
+  .finale{
+    position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
+    padding:28px;background:rgba(9,7,6,.82);backdrop-filter:blur(18px) saturate(1.1);
+    opacity:0;pointer-events:none;transition:opacity .5s ease;
+  }
+  .finale.on{opacity:1;pointer-events:auto}
+  .card{
+    position:relative;width:100%;max-width:420px;text-align:center;
+    padding:46px 30px 38px;border:1px solid var(--line);border-radius:24px;
+    background:radial-gradient(120% 100% at 50% 0%,#1d1610,#100c09 70%);
+    box-shadow:0 30px 80px rgba(0,0,0,.6);
+    transform:translateY(22px) scale(.97);opacity:0;
+    transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .7s;
+  }
+  .finale.on .card{transform:none;opacity:1}
+  .card .k{font-size:11px;letter-spacing:.36em;color:var(--copper);text-indent:.36em}
+  .card h2{
+    font-family:var(--serif);font-weight:600;font-size:clamp(30px,8vw,38px);
+    letter-spacing:.1em;margin:18px 0 10px;color:var(--cream);
+  }
+  .card .detail{
+    font-family:var(--serif);font-size:clamp(17px,4.6vw,19px);
+    color:var(--copper-soft);letter-spacing:.06em;margin-bottom:26px;
+  }
+  .card .note{font-size:14px;line-height:2;color:#c3b3a5;margin:0 0 28px}
+  .card .close{
+    appearance:none;border:1px solid var(--line);background:transparent;
+    color:#d7c7ba;font-family:var(--sans);font-size:13px;letter-spacing:.2em;
+    padding:12px 30px;border-radius:999px;cursor:pointer;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;opacity:1!important;transform:none!important}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <img src="assets/photo.jpg" alt="姜姜">
+  <div class="veil"></div>
+  <div class="hero-inner">
+    <p class="eyebrow">一 封 小 小 的 邀 约</p>
+    <h1>姜姜</h1>
+    <p class="hero-sub">想借你一个傍晚，不用很久</p>
+    <div class="hint"><i></i>往 下 看</div>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <section class="letter reveal">
+    <div class="mark">写 在 前 面</div>
+    <p>有很多话，打在聊天框里总觉得轻。想见你，当面说。</p>
+    <p>不用准备什么，也不用打扮得很正式。你像照片里那样走过来就好，剩下的交给我。</p>
+    <p>所以这一次，想认认真真地问你一句：<strong>周末，可以留一个傍晚给我吗？</strong></p>
+  </section>
+
+  <section class="plan reveal">
+    <div class="group">
+      <p class="label">时 间</p>
+      <div class="chips" data-group="time">
+        <button class="chip" aria-pressed="false" data-value="周五晚上">周五晚上</button>
+        <button class="chip" aria-pressed="false" data-value="周六下午">周六下午</button>
+        <button class="chip" aria-pressed="false" data-value="周日傍晚">周日傍晚</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <p class="label">想 做 的 事</p>
+      <div class="chips" data-group="act">
+        <button class="chip" aria-pressed="false" data-value="随便走走">随便走走</button>
+        <button class="chip" aria-pressed="false" data-value="去喝一杯">去喝一杯</button>
+        <button class="chip" aria-pressed="false" data-value="看个展">看个展</button>
+        <button class="chip" aria-pressed="false" data-value="吃顿好的">吃顿好的</button>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="k">你 的 选 择</div>
+      <div class="v empty" id="summary">还没选，等你</div>
+    </div>
+
+    <div class="actions">
+      <button class="primary" id="accept">就 这 么 说 定 了</button>
+      <button class="ghost" id="later">再，让我想想</button>
+    </div>
+  </section>
+
+  <section class="tail reveal">
+    <div class="line"></div>
+    <p>如果上面都不太合适，回我一句就好，我改。</p>
+    <div class="date">二 〇 二 六 · 秋</div>
+  </section>
+
+</div>
+
+<div class="finale" id="finale" role="dialog" aria-modal="true" aria-label="邀约确认">
+  <div class="card">
+    <div class="k">那 就 这 样</div>
+    <h2>说好了</h2>
+    <div class="detail" id="final-detail">周六下午 · 随便走走</div>
+    <p class="note">到时候我来接你。<br>临时有事也没关系，跟我说一声就好。</p>
+    <button class="close" id="close">好 的</button>
+  </div>
+</div>
+
+<script>
+  const pick = { time: null, act: null };
+
+  document.querySelectorAll('.chips').forEach(group => {
+    const key = group.dataset.group;
+    group.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed','false'));
+        chip.setAttribute('aria-pressed','true');
+        pick[key] = chip.dataset.value;
+        render();
+      });
+    });
+  });
+
+  const summaryEl = document.getElementById('summary');
+  function render(){
+    const parts = [pick.time, pick.act].filter(Boolean);
+    if (!parts.length){
+      summaryEl.textContent = '还没选，等你';
+      summaryEl.classList.add('empty');
+    } else {
+      summaryEl.textContent = parts.join(' · ');
+      summaryEl.classList.remove('empty');
+    }
+    document.getElementById('final-detail').textContent = parts.length
+      ? parts.join(' · ')
+      : '时间地点都听你的';
+  }
+
+  const finale = document.getElementById('finale');
+  document.getElementById('accept').addEventListener('click', () => {
+    render();
+    finale.classList.add('on');
+  });
+  document.getElementById('close').addEventListener('click', () => finale.classList.remove('on'));
+
+  // “再想想”会躲，躲三次就认了
+  const later = document.getElementById('later');
+  let dodges = 0;
+  const lines = ['再，让我想想','再，让我想想','再，让我想想'];
+  later.addEventListener('click', () => {
+    if (dodges >= 3){
+      later.textContent = '好，那我等你';
+      later.classList.add('calm');
+      return;
+    }
+    const x = (Math.random() * 2 - 1) * 46;
+    const y = (Math.random() * 2 - 1) * 26;
+    later.style.transform = `translate(${x}px,${y}px)`;
+    dodges++;
+  });
+
+  // 滚动渐显
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: .18 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
