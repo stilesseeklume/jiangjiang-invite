@@ -111,6 +111,10 @@
     font-size:12px;letter-spacing:.3em;color:var(--copper);
     margin:0 0 16px;text-indent:.3em;
   }
+  .label .note{
+    font-size:10px;letter-spacing:.14em;color:#8b7a6c;margin-left:8px;
+  }
+  .chip.small{font-size:14px;padding:10px 16px}
   .group{margin-bottom:38px}
   .chips{display:flex;flex-wrap:wrap;gap:10px}
   .chip{
@@ -128,13 +132,12 @@
 
   .summary{
     border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    padding:26px 0;margin:10px 0 34px;
-    display:flex;align-items:baseline;justify-content:space-between;gap:16px;
+    padding:24px 0;margin:10px 0 34px;
   }
-  .summary .k{font-size:12px;letter-spacing:.28em;color:var(--muted)}
+  .summary .k{font-size:12px;letter-spacing:.28em;color:var(--muted);margin-bottom:12px}
   .summary .v{
-    font-family:var(--serif);font-size:clamp(20px,5.6vw,26px);
-    color:var(--cream);letter-spacing:.06em;text-align:right;
+    font-family:var(--serif);font-size:clamp(19px,5.2vw,24px);
+    line-height:1.6;color:var(--cream);letter-spacing:.05em;
   }
   .summary .v.empty{color:#7d6c5e}
 
@@ -228,18 +231,43 @@
       <p class="label">时 间</p>
       <div class="chips" data-group="time">
         <button class="chip" aria-pressed="false" data-value="周五晚上">周五晚上</button>
+        <button class="chip" aria-pressed="false" data-value="周六中午">周六中午</button>
         <button class="chip" aria-pressed="false" data-value="周六下午">周六下午</button>
-        <button class="chip" aria-pressed="false" data-value="周日傍晚">周日傍晚</button>
+        <button class="chip" aria-pressed="false" data-value="周六晚上">周六晚上</button>
       </div>
     </div>
 
     <div class="group">
-      <p class="label">想 做 的 事</p>
-      <div class="chips" data-group="act">
-        <button class="chip" aria-pressed="false" data-value="随便走走">随便走走</button>
-        <button class="chip" aria-pressed="false" data-value="去喝一杯">去喝一杯</button>
-        <button class="chip" aria-pressed="false" data-value="看个展">看个展</button>
+      <p class="label">想 做 的 事 <span class="note">可多选</span></p>
+      <div class="chips" data-group="act" data-multi="true">
         <button class="chip" aria-pressed="false" data-value="吃顿好的">吃顿好的</button>
+        <button class="chip" aria-pressed="false" data-value="看场电影">看场电影</button>
+        <button class="chip" aria-pressed="false" data-value="去喝一杯">去喝一杯</button>
+        <button class="chip" aria-pressed="false" data-value="随便走走">随便走走</button>
+        <button class="chip" aria-pressed="false" data-value="兜个风">兜个风</button>
+        <button class="chip" aria-pressed="false" data-value="看个展">看个展</button>
+        <button class="chip" aria-pressed="false" data-value="逛街">逛街</button>
+        <button class="chip" aria-pressed="false" data-value="听现场">听现场</button>
+        <button class="chip" aria-pressed="false" data-value="玩密室">玩密室</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <p class="label">吃 什 么</p>
+      <div class="chips" data-group="food">
+        <button class="chip small" aria-pressed="false" data-value="火锅">火锅</button>
+        <button class="chip small" aria-pressed="false" data-value="烤肉">烤肉</button>
+        <button class="chip small" aria-pressed="false" data-value="日料">日料</button>
+        <button class="chip small" aria-pressed="false" data-value="粤菜">粤菜</button>
+        <button class="chip small" aria-pressed="false" data-value="西餐">西餐</button>
+        <button class="chip small" aria-pressed="false" data-value="泰国菜">泰国菜</button>
+        <button class="chip small" aria-pressed="false" data-value="川菜">川菜</button>
+        <button class="chip small" aria-pressed="false" data-value="湘菜">湘菜</button>
+        <button class="chip small" aria-pressed="false" data-value="韩餐">韩餐</button>
+        <button class="chip small" aria-pressed="false" data-value="云南菜">云南菜</button>
+        <button class="chip small" aria-pressed="false" data-value="烧鸟">烧鸟</button>
+        <button class="chip small" aria-pressed="false" data-value="披萨">披萨</button>
+        <button class="chip small" aria-pressed="false" data-value="交给你定">交给你定</button>
       </div>
     </div>
 
@@ -273,23 +301,38 @@
 </div>
 
 <script>
-  const pick = { time: null, act: null };
+  const pick = { time: null, act: [], food: null };
 
   document.querySelectorAll('.chips').forEach(group => {
     const key = group.dataset.group;
+    const multi = group.dataset.multi === 'true';
     group.querySelectorAll('.chip').forEach(chip => {
       chip.addEventListener('click', () => {
-        group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed','false'));
-        chip.setAttribute('aria-pressed','true');
-        pick[key] = chip.dataset.value;
+        const value = chip.dataset.value;
+        if (multi){
+          const on = chip.getAttribute('aria-pressed') === 'true';
+          chip.setAttribute('aria-pressed', on ? 'false' : 'true');
+          pick[key] = Array.from(group.querySelectorAll('.chip[aria-pressed="true"]')).map(c => c.dataset.value);
+        } else {
+          group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed','false'));
+          chip.setAttribute('aria-pressed','true');
+          pick[key] = value;
+        }
         render();
       });
     });
   });
 
   const summaryEl = document.getElementById('summary');
+  function planText(){
+    const parts = [];
+    if (pick.time) parts.push(pick.time);
+    if (pick.act.length) parts.push(pick.act.join('、'));
+    if (pick.food) parts.push(pick.food);
+    return parts;
+  }
   function render(){
-    const parts = [pick.time, pick.act].filter(Boolean);
+    const parts = planText();
     if (!parts.length){
       summaryEl.textContent = '还没选，等你';
       summaryEl.classList.add('empty');
